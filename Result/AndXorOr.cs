@@ -13,23 +13,24 @@ class AndXorOr
     public static int andXorOr(List<int> a)
     {
         int maxResult = 0;
+        Stack<int> stack = new Stack<int>();
 
-        if (a.Count <= 0)
-            return maxResult;
-
-        int index = 0;
-        do
+        foreach (int num in a)
         {
-            maxResult = Math.Max(cal(a[index], a[index + 1]), maxResult);
-            //Console.WriteLine($"{maxResult}, {a[index]}, {a[index +1]}");
-            index++;
-        } while (index + 1 < a.Count);
+            while (stack.Count > 0)
+            {
+                int top = stack.Peek();
+                int value = ((top & num) ^ (top | num)) & (top ^ num);
+                maxResult = Math.Max(maxResult, value);
+
+                if (num < top)
+                    stack.Pop();
+                else
+                    break;
+            }
+            stack.Push(num);
+        }
 
         return maxResult;
-    }
-
-    private static int cal(int element, int nextElement)
-    {
-        return ((element & nextElement) ^ (element | nextElement)) & (element ^ nextElement);
     }
 }

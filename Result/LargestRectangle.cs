@@ -94,4 +94,37 @@ public static class LargestRectangle
 
         return result;
     }
+
+    public static long AlternateLargestRectangle(List<int> h)
+    {
+        int n = h.Count;
+        Stack<int> stack = new Stack<int>();
+        long maxArea = 0;
+        int i = 0;
+
+        while (i < n)
+        {
+            if (stack.Count == 0 || h[i] >= h[stack.Peek()])
+            {
+                stack.Push(i++);
+            }
+            else
+            {
+                int top = stack.Pop();
+                long width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+                long area = (long)h[top] * width;
+                maxArea = Math.Max(maxArea, area);
+            }
+        }
+
+        while (stack.Count > 0)
+        {
+            int top = stack.Pop();
+            long width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+            long area = (long)h[top] * width;
+            maxArea = Math.Max(maxArea, area);
+        }
+
+        return maxArea;
+    }
 }
